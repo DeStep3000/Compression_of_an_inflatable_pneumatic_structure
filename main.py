@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     all_time = 2.5
     step = 0.01
-    delta_t = 0.9
+    delta_t = 0.005
 
     m = 100
     g = 9.8
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     freq = int(all_time / step)
     x = np.zeros(5, dtype=np.float64)
 
-    fig, x = plt.subplots()
+    fig, ax = plt.subplots()
 
     camera = Camera(fig)
     for i in range(freq):
