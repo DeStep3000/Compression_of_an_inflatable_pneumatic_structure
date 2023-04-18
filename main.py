@@ -6,23 +6,30 @@ import matplotlib.patches as patches
 
 
 def drawArc(parametrs, axes):
-    # Рисование дуги
+    # Рисование дуг
     arc_x = parametrs[0][1]
     arc_y = parametrs[0][2]
     arc_width = parametrs[3]
-    arc_height = parametrs[3]
+    arc_height = parametrs[4]
     arc_theta1 = parametrs[0][3]
     arc_theta2 = parametrs[0][4]
 
-    arc = patches.Arc((arc_x, arc_y), arc_width, arc_height, theta1=arc_theta1, theta2=arc_theta2)
-    axes.add_patch(arc)
-    plt.text(0.6, -0.3, "Arc", horizontalalignment="center")
+    radius1 = ((parametrs[0][0] - parametrs[1]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+    radius2 = ((parametrs[0][1] - parametrs[2]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+
+    arc1 = patches.Arc((parametrs[0][0], parametrs[0][2]), 2 * radius1, 2 * radius1, 0,
+                       (3 * pi / 2 - parametrs[0][3]) * 180 / np.pi, 3 * pi / 2 * 180 / np.pi)
+    arc2 = patches.Arc((parametrs[0][1], parametrs[0][2]), 2 * radius2, 2 * radius2, 270, 0, parametrs[0][4])
+
+    # arc = patches.Arc((arc_x, parametrs[3] / 2), arc_width, arc_height, theta1=270, theta2=arc_theta2)
+    axes.add_patch(arc1)
+    axes.add_patch(arc2)
 
 
-def draw(parametres, ax):
+def drawLines(parametres, ax):
     ax.hlines(0, parametres[0][0], parametres[0][1])
     ax.hlines(parametres[3], parametres[1], parametres[2])
-    drawArc(parametres, ax)
+
 
 
 def F(x):
@@ -54,7 +61,7 @@ if __name__ == "__main__":
     freq = int(all_time / step)
     x = np.zeros(5, dtype=np.float64)
 
-    fig, x = plt.subplots()
+    fig, ax = plt.subplots()
 
     camera = Camera(fig)
     for i in range(freq):
@@ -71,14 +78,17 @@ if __name__ == "__main__":
 
         all_parametrs = [x, Ax, Bx, Ay, C, By]
 
-        draw(all_parametrs, ax)
-        camera.snap()
         Ay += v * step
         v += (1 / m) * (p * delta_x - m * g) * step
         By = Ay
 
+        drawLines(all_parametrs, ax)
+        drawArc(all_parametrs, ax)
+        camera.snap()
+
+
     animation = camera.animate()
-    animation.save('camera.gif')
+    animation.save('camera2.gif')
     # print(x)
     # print()
     print('x1 = {}'.format(x[0]))
