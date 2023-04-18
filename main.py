@@ -1,28 +1,28 @@
 from math import *
 import numpy as np
-from celluloid import Camera as cum
+from celluloid import Camera
 import matplotlib.pyplot as plt
-import matplotlib
+import matplotlib.patches as patches
 
 
-def drawArc(BIG, axes):
+def drawArc(parametrs, axes):
     # Рисование дуги
-    arc_x = BIG[0][1]
-    arc_y = BIG[0][2]
-    arc_width = BIG[3]
-    arc_height = BIG[3]
-    arc_theta1 = BIG[0][3]
-    arc_theta2 = BIG[0][4]
+    arc_x = parametrs[0][1]
+    arc_y = parametrs[0][2]
+    arc_width = parametrs[3]
+    arc_height = parametrs[3]
+    arc_theta1 = parametrs[0][3]
+    arc_theta2 = parametrs[0][4]
 
-    arc = matplotlib.patches.Arc((arc_x, arc_y), arc_width, arc_height, theta1=arc_theta1, theta2=arc_theta2)
+    arc = patches.Arc((arc_x, arc_y), arc_width, arc_height, theta1=arc_theta1, theta2=arc_theta2)
     axes.add_patch(arc)
     plt.text(0.6, -0.3, "Arc", horizontalalignment="center")
 
 
-def draw(BIG, ax):
-    ax.hlines(0, BIG[0][0], BIG[0][1])
-    ax.hlines(BIG[3], BIG[1], BIG[2])
-    drawArc(BIG, ax)
+def draw(parametres, ax):
+    ax.hlines(0, parametres[0][0], parametres[0][1])
+    ax.hlines(parametres[3], parametres[1], parametres[2])
+    drawArc(parametres, ax)
 
 
 def F(x):
@@ -54,9 +54,9 @@ if __name__ == "__main__":
     freq = int(all_time / step)
     x = np.zeros(5, dtype=np.float64)
 
-    fig, ax = plt.subplots()
+    fig, x = plt.subplots()
 
-    cam = cum(fig)
+    camera = Camera(fig)
     for i in range(freq):
         while True:
             count = 0
@@ -69,16 +69,16 @@ if __name__ == "__main__":
             x = x_next
         delta_x = abs(x[0] - x[1])
 
-        BIG = [x, Ax, Bx, Ay, C, By]
+        all_parametrs = [x, Ax, Bx, Ay, C, By]
 
-        draw(BIG, ax)
-        cam.snap()
+        draw(all_parametrs, ax)
+        camera.snap()
         Ay += v * step
         v += (1 / m) * (p * delta_x - m * g) * step
         By = Ay
 
-    animation = cam.animate()
-    animation.save('FEDYA.gif', writer="Pillow")
+    animation = camera.animate()
+    animation.save('camera.gif')
     # print(x)
     # print()
     print('x1 = {}'.format(x[0]))
