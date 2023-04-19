@@ -8,22 +8,23 @@ import matplotlib.patches as patches
 def drawArc(parametrs, axes):
     # Рисование дуг
     arc_x = parametrs[0][1]
-    arc_y = parametrs[0][2]
-    arc_width = parametrs[3]
-    arc_height = parametrs[4]
+    arc_y = parametrs[3]
+    arc_width = parametrs[0][0]
+    arc_height = parametrs[5]
     arc_theta1 = parametrs[0][3]
     arc_theta2 = parametrs[0][4]
 
-    radius1 = ((parametrs[0][0] - parametrs[1]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
-    radius2 = ((parametrs[0][1] - parametrs[2]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+    # radius1 = ((parametrs[0][0] - parametrs[1]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+    # radius2 = ((parametrs[0][1] - parametrs[2]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+    #
+    # arc1 = patches.Arc((parametrs[0][0], parametrs[0][2]), 2 * radius1, 2 * radius1, 0,
+    #                    (3 * pi / 2 - parametrs[0][3]) * 180 / np.pi, 3 * pi / 2 * 180 / np.pi)
+    # arc2 = patches.Arc((parametrs[0][1], parametrs[0][2]), 2 * radius2, 2 * radius2, 270, 0, parametrs[0][4])
 
-    arc1 = patches.Arc((parametrs[0][0], parametrs[0][2]), 2 * radius1, 2 * radius1, 0,
-                       (3 * pi / 2 - parametrs[0][3]) * 180 / np.pi, 3 * pi / 2 * 180 / np.pi)
-    arc2 = patches.Arc((parametrs[0][1], parametrs[0][2]), 2 * radius2, 2 * radius2, 270, 0, parametrs[0][4])
+    arc = patches.Arc((arc_x, (arc_y/2)), arc_width, arc_height, theta1=0, theta2=arc_theta2)
+    axes.add_patch(arc)
 
-    # arc = patches.Arc((arc_x, parametrs[3] / 2), arc_width, arc_height, theta1=270, theta2=arc_theta2)
-    axes.add_patch(arc1)
-    axes.add_patch(arc2)
+
 
 
 def drawLines(parametres, ax):
@@ -62,6 +63,7 @@ if __name__ == "__main__":
     x = np.zeros(5, dtype=np.float64)
 
     fig, ax = plt.subplots()
+
 
     camera = Camera(fig)
     for i in range(freq):
