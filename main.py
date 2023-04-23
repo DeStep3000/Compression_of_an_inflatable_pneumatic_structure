@@ -36,12 +36,12 @@ def drawArc(parametrs, axes):
 def drawLines(parametrs, ax):
     # Рисование линий
     arc_x1 = parametrs[0][0]
-    arc_y = parametrs[0][2]
+    arc_x2 = parametrs[0][1]
 
     arc_Ax = parametrs[1]
     arc_Bx = parametrs[2]
     arc_Ay = parametrs[3]
-    ax.hlines(0, arc_x1, arc_y, color="purple", linewidth=2)
+    ax.hlines(0, arc_x1, arc_x2, color="purple", linewidth=2)
     ax.hlines(arc_Ay, arc_Ax, arc_Bx, color="purple", linewidth=2)
 
 
@@ -78,11 +78,12 @@ if __name__ == "__main__":
 
     x = np.zeros(5, dtype=np.float64)# Значения: x1, x2, y, phi1, phi2
 
-    #Для графика
+    # Для графика
     fig, ax = plt.subplots()
     camera = Camera(fig)
 
     for i in range(freq):
+        # Метод подгонки
         while True:
             count = 0
             x_next = x - F(x) * delta_t
@@ -94,8 +95,9 @@ if __name__ == "__main__":
             x = x_next
         delta_x = abs(x[0] - x[1])
 
-        all_parametrs = [x, Ax, Bx, Ay, C, By]
+        all_parametrs = [x, Ax, Bx, Ay, C, By] # Список параметров
 
+        # Значения для следующего шага
         Ay += v * step
         v += (1 / m) * (p * delta_x - m * g) * step
         By = Ay
@@ -106,6 +108,8 @@ if __name__ == "__main__":
 
     animation = camera.animate()
     animation.save('FEDYA.gif')
+    plt.xlim([0, 3])
+    plt.xlim([-0.5, 0.5])
     # print(x)
     # print()
     print('x1 = {}'.format(x[0]))
