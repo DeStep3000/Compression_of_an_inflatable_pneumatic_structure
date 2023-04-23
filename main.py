@@ -33,10 +33,16 @@ def drawArc(parametrs, axes):
     axes.add_patch(arc1)
     axes.add_patch(arc2)
 
+def drawLines(parametrs, ax):
+    # Рисование линий
+    arc_x1 = parametrs[0][0]
+    arc_y = parametrs[0][2]
 
-def drawLines(parametres, ax):
-    ax.hlines(0, parametres[0][0], parametres[0][1], color="purple", linewidth=2)
-    ax.hlines(parametres[3], parametres[1], parametres[2], color="purple", linewidth=2)
+    arc_Ax = parametrs[1]
+    arc_Bx = parametrs[2]
+    arc_Ay = parametrs[3]
+    ax.hlines(0, arc_x1, arc_y, color="purple", linewidth=2)
+    ax.hlines(arc_Ay, arc_Ax, arc_Bx, color="purple", linewidth=2)
 
 
 def F(x):
