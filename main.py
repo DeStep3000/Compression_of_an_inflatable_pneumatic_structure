@@ -80,6 +80,8 @@ if __name__ == "__main__":
 
     # Для графика
     fig, ax = plt.subplots()
+    plt.ylim([-0.1, 0.4])
+    plt.xlim([-0.5, 0.5])
     camera = Camera(fig)
 
     for i in range(freq):
@@ -108,8 +110,6 @@ if __name__ == "__main__":
 
     animation = camera.animate()
     animation.save('FEDYA.gif')
-    plt.xlim([0, 3])
-    plt.xlim([-0.5, 0.5])
     # print(x)
     # print()
     print('x1 = {}'.format(x[0]))
