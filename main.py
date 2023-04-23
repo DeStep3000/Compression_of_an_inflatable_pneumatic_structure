@@ -7,33 +7,36 @@ import matplotlib.patches as patches
 
 def drawArc(parametrs, axes):
     # Рисование дуг
-    # arc_x = parametrs[0][1]
-    # arc_y = parametrs[3]
-    # arc_width = parametrs[0][0]
-    # arc_height = parametrs[5]
-    # arc_theta1 = parametrs[0][3]
-    # arc_theta2 = parametrs[0][4]
+    arc_x1 = parametrs[0][0]
+    arc_x2 = parametrs[0][1]
+    arc_y = parametrs[0][2]
+    arc_theta1 = parametrs[0][3]
+    arc_theta2 = parametrs[0][4]
 
-    radius1 = ((parametrs[0][0] - parametrs[1]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
-    radius2 = ((parametrs[0][1] - parametrs[2]) ** 2 + (parametrs[0][2] - parametrs[3]) ** 2) ** 0.5
+    arc_Ax = parametrs[1]
+    arc_Bx = parametrs[2]
+    arc_Ay = parametrs[3]
 
-    arc1 = patches.Arc((parametrs[0][0], parametrs[0][2]), 2 * radius1, 2 * radius1, 0,
-                       (3 * pi / 2 - parametrs[0][3]) * 180 / np.pi, 3 * pi / 2 * 180 / np.pi)
-    arc2 = patches.Arc((parametrs[0][1], parametrs[0][2]), 2 * radius2, 2 * radius2, 270,
-                       (parametrs[0][4])*180/np.pi, 3*pi/2*180/np.pi)
+    ang = 180 / pi
+    c = 3 * pi / 2
 
-    # arc = patches.Arc((arc_x, (arc_y/2)), arc_width, arc_height, theta1=0, theta2=arc_theta2)
-    axes.add_patch(arc2)
+    radius1 = ((arc_x1 - arc_Ax) ** 2 + (arc_y - arc_Ay) ** 2) ** 0.5
+    radius2 = ((arc_x2 - arc_Bx) ** 2 + (arc_y - arc_Ay) ** 2) ** 0.5
+
+    # Дуга слева
+    arc1 = patches.Arc((arc_x1, arc_y), 2 * radius1, 2 * radius1, 0,
+                       (c - arc_theta1) * ang, c * ang, color="purple", linewidth=2)
+    # Дуга справа
+    arc2 = patches.Arc((arc_x2, arc_y), 2 * radius2, 2 * radius2, 270,
+                       0, arc_theta2 * ang, color="purple", linewidth=2)
+
     axes.add_patch(arc1)
-
-
-
+    axes.add_patch(arc2)
 
 
 def drawLines(parametres, ax):
-    ax.hlines(0, parametres[0][0], parametres[0][1])
-    ax.hlines(parametres[3], parametres[1], parametres[2])
-
+    ax.hlines(0, parametres[0][0], parametres[0][1], color="purple", linewidth=2)
+    ax.hlines(parametres[3], parametres[1], parametres[2], color="purple", linewidth=2)
 
 
 def F(x):
@@ -47,28 +50,31 @@ def F(x):
 
 
 if __name__ == "__main__":
+    # Ваши ЗНАЧЕНИЯ
     Ax = -0.353
     Bx = 0.353
     Ay = By = 0.3
     C = 3 * pi / 8
     EPSILON = 1e-6
 
+    # Значения, связанные со временем
     all_time = 2.5
     step = 0.01
-    delta_t = 0.9
+    delta_t = 0.05
+    freq = int(all_time / step)
 
+    # Физические значения
     m = 100
     g = 9.8
     p = 2000
     v = 0
 
-    freq = int(all_time / step)
-    x = np.zeros(5, dtype=np.float64)
+    x = np.zeros(5, dtype=np.float64)# Значения: x1, x2, y, phi1, phi2
 
+    #Для графика
     fig, ax = plt.subplots()
-
-
     camera = Camera(fig)
+
     for i in range(freq):
         while True:
             count = 0
@@ -87,14 +93,12 @@ if __name__ == "__main__":
         v += (1 / m) * (p * delta_x - m * g) * step
         By = Ay
 
-
         drawLines(all_parametrs, ax)
         drawArc(all_parametrs, ax)
         camera.snap()
 
-
     animation = camera.animate()
-    animation.save('camera2.gif')
+    animation.save('FEDYA.gif')
     # print(x)
     # print()
     print('x1 = {}'.format(x[0]))
