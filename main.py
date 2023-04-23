@@ -46,6 +46,7 @@ def drawLines(parametrs, ax):
 
 
 def F(x):
+    # Система уравнений F(от вектора x)
     fx = np.zeros(5, dtype=np.float64)
     fx[0] = x[0] + x[2] * np.cos(3 * pi / 2 - x[3]) - Ax
     fx[1] = x[1] + x[2] * np.cos(3 * pi / 2 + x[4]) - Bx
